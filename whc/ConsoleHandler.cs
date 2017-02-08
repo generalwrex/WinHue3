@@ -208,7 +208,7 @@ namespace whc
                     CommandResult bresult = bridge.GetListObjects<Light>();
                     if(bresult.Success)
                     {
-                        Dictionary<string, Light> listLights = (Dictionary<string, Light>)bresult.resultobject;
+                        Dictionary<string, Light> listLights = (Dictionary<string, Light>)bresult.Resultobject;
                         foreach(KeyValuePair<string,Light> kvp in listLights)
                         {
                             WriteMessageToConsole(
@@ -217,7 +217,7 @@ namespace whc
                     }               
                     else
                     {
-                        WriteMessageToConsole("An error occured while fetching the list of lights :" + bresult.resultobject );
+                        WriteMessageToConsole("An error occured while fetching the list of lights :" + bresult.Resultobject );
                     }
                 }},
                 {"lg", "List the groups available in the bridge", delegate(string v)
@@ -225,7 +225,7 @@ namespace whc
                     CommandResult bresult = bridge.GetListObjects<Group>();
                     if(bresult.Success)
                     {
-                        Dictionary<string, Group> listgroups = (Dictionary<string, Group>)bresult.resultobject;
+                        Dictionary<string, Group> listgroups = (Dictionary<string, Group>)bresult.Resultobject;
                         foreach(KeyValuePair<string,Group> kvp in listgroups)
                         {
                             WriteMessageToConsole(
@@ -234,7 +234,7 @@ namespace whc
                     }               
                     else
                     {
-                        WriteMessageToConsole("An error occured while fetching the list of groups : " + bresult.resultobject);
+                        WriteMessageToConsole("An error occured while fetching the list of groups : " + bresult.Resultobject);
                     }
                 }},
                 {"ls", "List the scenes available in the bridge", delegate(string v)
@@ -242,7 +242,7 @@ namespace whc
                     CommandResult bresult = bridge.GetListObjects<Scene>();
                     if(bresult.Success)
                     {
-                        Dictionary<string, Scene> listscenes = (Dictionary<string, Scene>) bresult.resultobject;
+                        Dictionary<string, Scene> listscenes = (Dictionary<string, Scene>) bresult.Resultobject;
                         foreach(KeyValuePair<string,Scene> kvp in listscenes)
                         {
                             WriteMessageToConsole(
@@ -251,7 +251,7 @@ namespace whc
                     }               
                     else
                     {
-                        WriteMessageToConsole("An error occured while fetching the list of scenes : " + bresult.resultobject);
+                        WriteMessageToConsole("An error occured while fetching the list of scenes : " + bresult.Resultobject);
                     }
                 }},
                 {"lc", "List the schedules available in the bridge", delegate(string v)
@@ -259,7 +259,7 @@ namespace whc
                     CommandResult bresult = bridge.GetListObjects<Schedule>();
                     if(bresult.Success)
                     {
-                        Dictionary<string, Schedule> listscenes = (Dictionary<string, Schedule>)bresult.resultobject;
+                        Dictionary<string, Schedule> listscenes = (Dictionary<string, Schedule>)bresult.Resultobject;
                         foreach(KeyValuePair<string,Schedule> kvp in listscenes)
                         {
                             WriteMessageToConsole($"[ID]={kvp.Key}, Name={kvp.Value.name}, Time={kvp.Value.localtime}");
@@ -267,7 +267,7 @@ namespace whc
                     }               
                     else
                     {
-                        WriteMessageToConsole("An error occured while fetching the list of schedules : " + bresult.resultobject);
+                        WriteMessageToConsole("An error occured while fetching the list of schedules : " + bresult.Resultobject);
                     }
                 }},
                 {"lo", "List the sensors available in the bridge", delegate(string v)
@@ -276,7 +276,7 @@ namespace whc
                     
                     if(bresult.Success)
                     {
-                        Dictionary<string, Sensor> listsensors = (Dictionary<string, Sensor>) bresult.resultobject;
+                        Dictionary<string, Sensor> listsensors = (Dictionary<string, Sensor>) bresult.Resultobject;
                         foreach(KeyValuePair<string,Sensor> kvp in listsensors)
                         {
                             WriteMessageToConsole(
@@ -285,7 +285,7 @@ namespace whc
                     }               
                     else
                     {
-                        WriteMessageToConsole("An error occured while fetching the list of sensors : " + bresult.resultobject);
+                        WriteMessageToConsole("An error occured while fetching the list of sensors : " + bresult.Resultobject);
                     }
                 }},
                 {"lr", "List the rules available in the bridge", delegate(string v)
@@ -294,7 +294,7 @@ namespace whc
 
                     if(bresult.Success)
                     {
-                        Dictionary<string, HueLib2.Rule> listrules = (Dictionary<string, HueLib2.Rule>) bresult.resultobject;
+                        Dictionary<string, HueLib2.Rule> listrules = (Dictionary<string, HueLib2.Rule>) bresult.Resultobject;
                         foreach(KeyValuePair<string, HueLib2.Rule> kvp in listrules)
                         {
                             WriteMessageToConsole(
@@ -303,7 +303,7 @@ namespace whc
                     }               
                     else
                     {
-                        WriteMessageToConsole("An error occured while fetching the list of rules : " + bresult.resultobject);
+                        WriteMessageToConsole("An error occured while fetching the list of rules : " + bresult.Resultobject);
                     }
                 }},
                 {"lightstate=","Get the state of a light", delegate(string v)
@@ -316,13 +316,13 @@ namespace whc
                         CommandResult bresult = bridge.GetObject<Light>(v);
                         if (bresult.Success)
                         {
-                            Light light = (Light) bresult.resultobject;
+                            Light light = (Light) bresult.Resultobject;
                             WriteMessageToConsole(@light.state.ToString() ?? bridge.lastMessages.ToString());
 
                         }
                         else
                         {
-                            WriteMessageToConsole("Error getting the light : " + bresult.resultobject);
+                            WriteMessageToConsole("Error getting the light : " + bresult.Resultobject);
                         }
                     }
                     else
@@ -340,13 +340,13 @@ namespace whc
                         CommandResult bresult = bridge.GetObject<Group>(v);
                         if (bresult.Success)
                         {
-                            Group group = (Group) bresult.resultobject;
+                            Group group = (Group) bresult.Resultobject;
                             WriteMessageToConsole(@group.action.ToString());
 
                         }
                         else
                         {
-                            WriteMessageToConsole("Error getting group : " + bresult.resultobject);
+                            WriteMessageToConsole("Error getting group : " + bresult.Resultobject);
                         }
                     }
                     else
@@ -421,7 +421,7 @@ namespace whc
                         
                         if (bresult.Success)
                         {
-                            Light light = (Light) bresult.resultobject;
+                            Light light = (Light) bresult.Resultobject;
                             if(light.state.@on != null && (bool)light.state.@on)
                             {
                                 state.on = false;
@@ -433,7 +433,7 @@ namespace whc
                         }
                         else
                         {
-                            WriteMessageToConsole("Error getting light " + bresult.resultobject);
+                            WriteMessageToConsole("Error getting light " + bresult.Resultobject);
                         }
                     }
                     else
@@ -584,7 +584,7 @@ namespace whc
                         CommandResult bresult = bridge.GetObject<Group>(id);
                         if (bresult.Success)
                         {
-                            Group group = (Group) bresult.resultobject;
+                            Group group = (Group) bresult.Resultobject;
                             if(@group.action.@on != null && (bool)@group.action.@on)
                             {
                                 action.on = false;
@@ -597,7 +597,7 @@ namespace whc
                         }
                         else
                         {
-                            WriteMessageToConsole("Error getting group : " + bresult.resultobject);
+                            WriteMessageToConsole("Error getting group : " + bresult.Resultobject);
                         }
                     }
                     else

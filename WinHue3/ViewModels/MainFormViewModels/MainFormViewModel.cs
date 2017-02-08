@@ -14,6 +14,8 @@ using WinHue3.Models;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 using WinHue3.Settings;
+using Xceed.Wpf.Toolkit.PropertyGrid;
+using PropertyGrid = Xceed.Wpf.Toolkit.PropertyGrid.PropertyGrid;
 
 namespace WinHue3.ViewModels
 {
@@ -28,6 +30,8 @@ namespace WinHue3.ViewModels
         private string _lastmessage = string.Empty;
         private MainFormModel _mainFormModel;
         private CpuTempMonitor _ctm;
+        private PropertyGrid _propertyGrid;
+
         public MainFormViewModel()
         {
 
@@ -71,6 +75,15 @@ namespace WinHue3.ViewModels
         {
             _eventlogform.Owner = Application.Current.MainWindow;
             LoadBridges();
+        }
+
+        public PropertyGrid PropertyGrid
+        {
+            get
+            {
+                return _propertyGrid;
+            }
+            set { SetProperty(ref _propertyGrid,value); }
         }
 
         private void LoadBridges()

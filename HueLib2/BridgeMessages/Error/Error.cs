@@ -29,7 +29,7 @@ namespace HueLib2
 
         public override string ToString()
         {
-            return string.Format("Type : {0}, {1} at address {2}.",type,description,address);
+            return $"Type : {type}, {description} at address {address}.";
         }
 
   

@@ -43,6 +43,7 @@ namespace WinHue3
             InitializeComponent();
             _mfvm = DataContext as MainFormViewModel;
             _mfvm.Eventlogform = _fel;
+            _mfvm.PropertyGrid = pgObject;
             Title += " " + Version;
             Hue.DetectLocalProxy = WinHueSettings.settings.DetectProxy;
              trayicon.Icon = Properties.Resources.icon;
