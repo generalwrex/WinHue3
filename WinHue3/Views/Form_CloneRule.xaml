@@ -13,12 +13,13 @@
         <viewmodels:CloneRuleViewModel/>
     </Window.DataContext>
     <Grid>
-        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="10,15,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="10,15,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding ListRuleObject}"/>
         <Label x:Name="label" Content="=>" HorizontalAlignment="Left" Margin="135,11,0,0" VerticalAlignment="Top"/>
-        <controls:CommandComboBox x:Name="comboBox1" HorizontalAlignment="Left" Margin="166,15,0,0" VerticalAlignment="Top" Width="120" Command="{Binding AddToListCommand}"/>
+        <controls:CommandComboBox x:Name="comboBox1" HorizontalAlignment="Left" Margin="166,15,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding ListReplacementsObject}" Command="{Binding AddToListCommand}"/>
         <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="100" Margin="10,55,0,0" VerticalAlignment="Top" Width="276"/>
-        <Button x:Name="button" Content="{x:Static resx:GUI.Form_CloneRule_Clone}" HorizontalAlignment="Left" Margin="131,160,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="button1" Content="{x:Static resx:GUI.Form_CloneRule_Cancel}" HorizontalAlignment="Left" Margin="211,160,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btnClone" Content="{x:Static resx:GUI.Form_CloneRule_Clone}" HorizontalAlignment="Left" Margin="131,160,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btnCancel" Content="{x:Static resx:GUI.Form_CloneRule_Cancel}" HorizontalAlignment="Left" Margin="211,160,0,0" VerticalAlignment="Top" Width="75" Click="btnCancel_Click"/>
+        <Button x:Name="btnRemove" Content="{x:Static resx:GUI.Form_CloneRule_Remove}" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Width="75" Command="{Binding RemoveFromListCommand}"/>
 
     </Grid>
 </Window>

@@ -52,7 +52,7 @@ namespace WinHue3
                 CommandResult cr = _bridge.GetObject<Scene>(sceneid);
                 if (cr.Success)
                 {
-                    _scvm.Scene = (Scene) cr.resultobject;
+                    _scvm.Scene = (Scene) cr.Resultobject;
                 }
                 else
                 {
@@ -76,7 +76,7 @@ namespace WinHue3
 
             if (comres.Success)
             {
-                MessageCollection mc = ((MessageCollection) comres.resultobject);
+                MessageCollection mc = ((MessageCollection) comres.Resultobject);
 
                 string id = "";
                 id = _currentsceneid != string.Empty ? _currentsceneid : ((CreationSuccess)mc[0]).id;

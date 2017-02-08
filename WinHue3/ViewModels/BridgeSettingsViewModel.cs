@@ -35,7 +35,7 @@ namespace WinHue3.ViewModels
                 if(cr.Success)
                 {
                     //****** General Pane **********
-                    BridgeSettings brs = (BridgeSettings)cr.resultobject;
+                    BridgeSettings brs = (BridgeSettings)cr.Resultobject;
                     GeneralModel.Apiversion = brs.apiversion;
                     GeneralModel.Linkstate = brs.linkbutton == true ? GlobalStrings.Link_Pressed : GlobalStrings.Link_Not_Pressed;
                     GeneralModel.Localtime = brs.localtime;
@@ -47,7 +47,7 @@ namespace WinHue3.ViewModels
                     CommandResult tz = _bridge.GetTimeZones();
                     if(tz.Success)
                     {
-                        GeneralModel.ListTimeZones = (List<string>)tz.resultobject;
+                        GeneralModel.ListTimeZones = (List<string>)tz.Resultobject;
                         GeneralModel.Timezone = brs.timezone;
                     }
 

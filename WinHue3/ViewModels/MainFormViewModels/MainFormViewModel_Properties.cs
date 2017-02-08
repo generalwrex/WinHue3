@@ -129,7 +129,7 @@ namespace WinHue3.ViewModels
                
                 CommandResult cr = SelectedBridge.GetBridgeSettings();
                 if (!cr.Success) return Visibility.Collapsed;
-                BridgeSettings brs = (BridgeSettings) cr.resultobject;
+                BridgeSettings brs = (BridgeSettings) cr.Resultobject;
                 return brs.swupdate.updatestate == 2 ? Visibility.Visible : Visibility.Collapsed;
             }
         }

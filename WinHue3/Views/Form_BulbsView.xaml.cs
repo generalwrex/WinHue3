@@ -19,7 +19,7 @@ namespace WinHue3
             _bridge = bridge;
             CommandResult lresult = _bridge.GetListObjects<Light>();
             if (!lresult.Success) return;
-            _bvv.Initialize((Dictionary<string, Light>)lresult.resultobject);
+            _bvv.Initialize((Dictionary<string, Light>)lresult.Resultobject);
         }
 
     }

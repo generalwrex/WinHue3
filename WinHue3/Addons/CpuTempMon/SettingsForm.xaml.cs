@@ -89,8 +89,8 @@ namespace WinHue3
             CommandResult bresult2 = _bridge.GetListObjects<Group>();
             if (bresult.Success && bresult2.Success)
             {
-                Dictionary<string, Light> lightlist = (Dictionary<string, Light>)bresult.resultobject;
-                Dictionary<string, Group> grouplist = (Dictionary<string, Group>)bresult2.resultobject;
+                Dictionary<string, Light> lightlist = (Dictionary<string, Light>)bresult.Resultobject;
+                Dictionary<string, Group> grouplist = (Dictionary<string, Group>)bresult2.Resultobject;
 
                 foreach (KeyValuePair<string, Light> kvp in lightlist)
                 {

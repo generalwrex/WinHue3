@@ -184,7 +184,7 @@ namespace HueLib2
             {
                 case WebExceptionStatus.Success:
                     listObjets = Serializer.DeserializeToObject<DataStore>(comres.data);
-                    if (listObjets != null) return new CommandResult() {Success = true, resultobject = listObjets};
+                    if (listObjets != null) return new CommandResult() {Success = true, Resultobject = listObjets};
                     listObjets = new DataStore();
                     List<Message> lstmsg = Serializer.DeserializeToObject<List<Message>>(Communication.lastjson);
                     lastMessages = lstmsg != null ? new MessageCollection(lstmsg) : new MessageCollection { new UnkownError(comres) };
@@ -199,7 +199,7 @@ namespace HueLib2
                     break;
             }
 
-            return new CommandResult() {Success = false,resultobject = "Error deserializing the result object."};
+            return new CommandResult() {Success = false,Resultobject = "Error deserializing the result object."};
         }
 
         public bool CheckAuthorization()
@@ -208,7 +208,7 @@ namespace HueLib2
             if (ApiKey == string.Empty) return false;
             CommandResult cr = GetBridgeSettings();
             if (!cr.Success) return false;
-            BridgeSettings settings = (BridgeSettings) cr.resultobject;
+            BridgeSettings settings = (BridgeSettings) cr.Resultobject;
             if (settings.portalservices != null)
             {
                 authorization = true;                     

@@ -88,13 +88,13 @@ namespace WinHue3
             if (comres.Success)
             {
                 log.Info(_editedRule == null ? $"Created new rule : {newRule.name}" : $"Updated rule : {newRule.name}");
-                if (((MessageCollection) comres.resultobject)[0] is CreationSuccess)
+                if (((MessageCollection) comres.Resultobject)[0] is CreationSuccess)
                 {
-                    id = ((CreationSuccess)((MessageCollection)comres.resultobject)[0]).id;
+                    id = ((CreationSuccess)((MessageCollection)comres.Resultobject)[0]).id;
                 }
                 else
                 {
-                    id = ((Success)((MessageCollection)comres.resultobject)[0]).id;
+                    id = ((Success)((MessageCollection)comres.Resultobject)[0]).id;
                 }
                
                 DialogResult = true;

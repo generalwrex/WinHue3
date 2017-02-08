@@ -65,7 +65,7 @@ namespace WinHue3
             if (comres.Success)
             {
                 DialogResult = true;
-                MessageCollection mc = (MessageCollection) comres.resultobject;
+                MessageCollection mc = (MessageCollection) comres.Resultobject;
                 actualobj = new Schedule() { Id = mc[0].ToString()};
                 Close();
             }

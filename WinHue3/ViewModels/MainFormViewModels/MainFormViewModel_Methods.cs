@@ -24,14 +24,6 @@ namespace WinHue3.ViewModels
 {
     public partial class MainFormViewModel : ValidatableBindableBase
     {
-        private T ExecuteGenericMethod<T>(object objectmethod, string methodname, object[] paramsarray) where T : new()
-        {
-            MethodInfo mi = objectmethod.GetType().GetMethod(methodname);
-            MethodInfo generic = mi.MakeGenericMethod(_selectedObject.GetType());
-            object result = generic.Invoke(SelectedBridge, paramsarray);
-            return (T)result;
-        }
-
         #region BRIDGE_SETTINGS
         private void ChangeBridgeSettings()
         {
@@ -41,7 +33,7 @@ namespace WinHue3.ViewModels
                 CommandResult bresult = SelectedBridge.GetBridgeSettings();
                 if (bresult.Success)
                 {
-                    string newname = ((BridgeSettings)(bresult.resultobject)).name;
+                    string newname = ((BridgeSettings)(bresult.Resultobject)).name;
                     if (SelectedBridge.Name != newname)
                     {
                         SelectedBridge.Name = newname;
@@ -52,6 +44,10 @@ namespace WinHue3.ViewModels
                     }
                     RefreshView();
                     OnPropertyChanged("UpdateAvailable");
+                }
+                else
+                {
+                    MessageBoxError.ShowLastErrorMessages(SelectedBridge);
                 }
             }
         }
@@ -137,7 +133,6 @@ namespace WinHue3.ViewModels
             }
             else
             {
-                ListBridgeObjects = null;
                 log.Error(hr.Hrobject);
             }
             Cursor_Tools.ShowNormalCursor();
@@ -170,6 +165,10 @@ namespace WinHue3.ViewModels
                     ListBridgeObjects[index].Image = newimg;
 
                 }
+                else
+                {
+                    MessageBoxError.ShowLastErrorMessages(SelectedBridge);
+                }
             }
             else
             {
@@ -185,11 +184,8 @@ namespace WinHue3.ViewModels
             int index = ListBridgeObjects.FindIndex(x => x.Id == obj.Id && x.GetType() == obj.GetType());
             if (index == -1) return;
 
-            MethodInfo mi = typeof(HueObjectHelper).GetMethod("GetObject");
-            MethodInfo generic = mi.MakeGenericMethod(obj.GetType());
-            HelperResult hr = (HelperResult)generic.Invoke(SelectedBridge, new object[] { SelectedBridge, obj.Id });
-
-            if (!hr.Success) return;
+            HelperResult hr = HueObjectHelper.ExecuteGenericMethod("GetObject", obj.GetType(),new object[] { SelectedBridge, obj.Id });
+            if (!hr.Success) { MessageBoxError.ShowLastErrorMessages(SelectedBridge); return; };
             HueObject newobj = (HueObject)hr.Hrobject;
             ListBridgeObjects[index].Image = newobj.Image;
             PropertyInfo[] pi = newobj.GetType().GetProperties();
@@ -213,7 +209,7 @@ namespace WinHue3.ViewModels
             HueLib2.Action act = new HueLib2.Action() { on = true };
             if (WinHueSettings.settings.AllOnTT != null) act.transitiontime = WinHueSettings.settings.AllOnTT;
             CommandResult bresult = SelectedBridge.SetState<Group>(act, "0");
-            if (!bresult.Success) return;
+            if (!bresult.Success) { MessageBoxError.ShowLastErrorMessages(SelectedBridge); return; };
             log.Debug("Refreshing the main view.");
             RefreshView();
         }
@@ -224,7 +220,7 @@ namespace WinHue3.ViewModels
             HueLib2.Action act = new Action() { on = false };
             if (WinHueSettings.settings.AllOnTT != null) act.transitiontime = WinHueSettings.settings.AllOnTT;
             CommandResult bresult = SelectedBridge.SetState<Group>(act, "0");
-            if (!bresult.Success) return;
+            if (!bresult.Success) { MessageBoxError.ShowLastErrorMessages(SelectedBridge); return; };
             log.Debug("Refreshing the main view.");
             RefreshView();
         }
@@ -239,8 +235,7 @@ namespace WinHue3.ViewModels
             }
             else
             {
-                MessageBox.Show(GlobalStrings.Error_Getting_NewLights, GlobalStrings.Error, MessageBoxButton.OK, MessageBoxImage.Error);
-                log.Error("There was an error while looking for new lights.");
+                MessageBoxError.ShowLastErrorMessages(SelectedBridge);
             }
         }
 
@@ -381,7 +376,7 @@ namespace WinHue3.ViewModels
             CommandResult bresult = SelectedBridge.DoSwUpdate();
             if (!bresult.Success)
             {
-                log.Error("An error occured while trying to start a bridge update. Please try again later.");
+                MessageBoxError.ShowLastErrorMessages(SelectedBridge);
                 return;
             }
             else
@@ -391,7 +386,7 @@ namespace WinHue3.ViewModels
                 CommandResult bsettings = SelectedBridge.GetBridgeSettings();
                 if (bsettings.Success)
                 {
-                    BridgeSettings brs = (BridgeSettings)bsettings.resultobject;
+                    BridgeSettings brs = (BridgeSettings)bsettings.Resultobject;
 
                     switch (brs.swupdate.updatestate)
                     {
@@ -443,7 +438,10 @@ namespace WinHue3.ViewModels
                         List<object> listparams = new List<object>();
                         listparams.Add(Convert.ChangeType(h.properties, typeof(CommonProperties)));
                         listparams.Add(h.objecType != null ? h.id : SelectedObject.Id);
-                        ExecuteGenericMethod<CommandResult>(SelectedBridge, "SetState", listparams.ToArray());
+                        CommandResult cr = SelectedBridge.ExecuteGenericMethod("SetState", SelectedObject.GetType(), listparams.ToArray());
+                        if (!cr.Success)
+                            MessageBoxError.ShowLastErrorMessages(SelectedBridge);
+      
                     }
                     else
                     {
@@ -493,7 +491,7 @@ namespace WinHue3.ViewModels
         #region SLIDERS_METHODS
         private void SliderChangeHue()
         {
-            CommandResult cr = ExecuteGenericMethod<CommandResult>(SelectedBridge, "SetState", new object[] { new CommonProperties() { hue = MainFormModel.SliderHue, transitiontime = SliderTt }, _selectedObject.Id });
+            CommandResult cr = SelectedBridge.ExecuteGenericMethod("SetState", SelectedObject.GetType(), new object[] { new CommonProperties() { hue = MainFormModel.SliderHue, transitiontime = SliderTt }, _selectedObject.Id });
             if(!cr.Success)
             {
                 MainFormModel.SliderHue = MainFormModel.OldSliderHue;
@@ -512,7 +510,7 @@ namespace WinHue3.ViewModels
 
         private void SliderChangeBri()
         {
-            CommandResult cr = ExecuteGenericMethod<CommandResult>(SelectedBridge, "SetState", new object[] { new CommonProperties() { bri = MainFormModel.SliderBri, transitiontime = SliderTt }, _selectedObject.Id });
+            CommandResult cr = SelectedBridge.ExecuteGenericMethod("SetState", SelectedObject.GetType(), new object[] { new CommonProperties() { bri = MainFormModel.SliderBri, transitiontime = SliderTt }, _selectedObject.Id });        
             if(!cr.Success)
             {
                 MainFormModel.SliderBri = MainFormModel.OldSliderBri;
@@ -530,7 +528,7 @@ namespace WinHue3.ViewModels
 
         private void SliderChangeCt()
         {
-            CommandResult cr = ExecuteGenericMethod<CommandResult>(SelectedBridge, "SetState", new object[] { new CommonProperties() { ct = MainFormModel.SliderCt, transitiontime = SliderTt }, _selectedObject.Id });
+            CommandResult cr = SelectedBridge.ExecuteGenericMethod("SetState", SelectedObject.GetType(), new object[] { new CommonProperties() { ct = MainFormModel.SliderCt, transitiontime = SliderTt }, _selectedObject.Id });
             if(!cr.Success)
             {
                 MainFormModel.SliderCt = MainFormModel.OldSliderCt;
@@ -548,7 +546,7 @@ namespace WinHue3.ViewModels
 
         private void SliderChangeSat()
         {
-            CommandResult cr = ExecuteGenericMethod<CommandResult>(SelectedBridge, "SetState", new object[] { new CommonProperties() { sat = MainFormModel.SliderSat, transitiontime = SliderTt }, _selectedObject.Id });
+            CommandResult cr = SelectedBridge.ExecuteGenericMethod("SetState", SelectedObject.GetType(), new object[] { new CommonProperties() { sat = MainFormModel.SliderSat, transitiontime = SliderTt }, _selectedObject.Id });
             if(!cr.Success)
             {
                 MainFormModel.SliderSat = MainFormModel.OldSliderSat;
@@ -566,7 +564,7 @@ namespace WinHue3.ViewModels
 
         private void SliderChangeXy()
         {
-            CommandResult cr = ExecuteGenericMethod<CommandResult>(SelectedBridge, "SetState", new object[] { new CommonProperties() { xy = new XY() { x = MainFormModel.SliderX, y = MainFormModel.SliderY}, transitiontime = SliderTt }, _selectedObject.Id });
+            CommandResult cr = SelectedBridge.ExecuteGenericMethod("SetState", SelectedObject.GetType(), new object[] { new CommonProperties() { xy = new XY() { x = MainFormModel.SliderX, y = MainFormModel.SliderY }, transitiontime = SliderTt }, _selectedObject.Id });
             if (!cr.Success)
             {
                 MainFormModel.SliderX = MainFormModel.OldSliderX;
@@ -687,7 +685,7 @@ namespace WinHue3.ViewModels
                         CommandResult cr = SelectedBridge.GetObject<Sensor>(obj.Id);
                         if (cr.Success)
                         {
-                            Sensor daylight = (Sensor)cr.resultobject;
+                            Sensor daylight = (Sensor)cr.Resultobject;
                             daylight.Id = obj.Id;
                             Form_Daylight dl = new Form_Daylight(daylight, SelectedBridge) { Owner = Application.Current.MainWindow };
                             if (dl.ShowDialog() == true)
@@ -712,7 +710,7 @@ namespace WinHue3.ViewModels
                         CommandResult crs = SelectedBridge.GetObject<Sensor>(obj.Id);
                         if (crs.Success)
                         {
-                            Form_SensorCreator fsc = new Form_SensorCreator(SelectedBridge, (Sensor)crs.resultobject)
+                            Form_SensorCreator fsc = new Form_SensorCreator(SelectedBridge, (Sensor)crs.Resultobject)
                             {
                                 Owner = Application.Current.MainWindow
                             };
@@ -755,10 +753,9 @@ namespace WinHue3.ViewModels
 
         private void Identify(string type)
         {
-            MethodInfo mi = typeof(Bridge).GetMethod("SetState");
-            MethodInfo generic = mi.MakeGenericMethod(_selectedObject.GetType());
-            log.Info($@"Sending the {type} Identify command to object ID : {_selectedObject.Id}");
-            CommandResult hr = (CommandResult)generic.Invoke(SelectedBridge, new object[] { new CommonProperties() { alert = type }, _selectedObject.Id });
+            CommandResult cr = SelectedBridge.ExecuteGenericMethod("SetState", _selectedObject.GetType(), new object[] { new CommonProperties() { alert = type }, _selectedObject.Id });
+            if (!cr.Success)
+                MessageBoxError.ShowLastErrorMessages(SelectedBridge);
         }
 
         private void Clone(bool quick)
@@ -794,13 +791,11 @@ namespace WinHue3.ViewModels
         private bool Duplicate()
         {
             bool result = false;
-            CommandResult cr = ExecuteGenericMethod<CommandResult>(SelectedBridge, "CreateObject", new[] { SelectedObject.Clone() });
+            CommandResult cr = SelectedBridge.ExecuteGenericMethod("CreateObject",SelectedObject.GetType(), new[] { SelectedObject.Clone() });
             if (cr.Success)
             {
                 log.Info("Object cloned succesfully !");
-                MethodInfo mi = typeof(HueObjectHelper).GetMethod("GetObject");
-                MethodInfo gm = mi.MakeGenericMethod(SelectedObject.GetType());
-                HelperResult hr = (HelperResult)gm.Invoke(null, new object[] { SelectedBridge, cr.resultobject.ToString() });
+                HelperResult hr = HueObjectHelper.ExecuteGenericMethod("GetObject", SelectedObject.GetType(), new object[] { SelectedBridge, cr.Resultobject.ToString() });
                 if (hr.Success)
                 {
                     ListBridgeObjects.Add((HueObject)hr.Hrobject);
@@ -834,11 +829,10 @@ namespace WinHue3.ViewModels
                 MessageBox.Show(string.Format(GlobalStrings.Confirm_Delete_Object, SelectedObject.GetName()),
                     GlobalStrings.Warning, MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
-            MethodInfo method = typeof(Bridge).GetMethod("RemoveObject");
-            MethodInfo generic = method.MakeGenericMethod(_selectedObject.GetType());
-            CommandResult bresult = (CommandResult)generic.Invoke(SelectedBridge, new object[] { SelectedObject.Id });
 
-            log.Debug("Result : " + bresult.resultobject);
+            CommandResult bresult = SelectedBridge.ExecuteGenericMethod("RemoveObject", _selectedObject.GetType(), new object[] { SelectedObject.Id });
+
+            log.Debug("Result : " + bresult.Resultobject);
             if (bresult.Success)
             {
                 int index =
@@ -916,7 +910,6 @@ namespace WinHue3.ViewModels
         {
             Application.Current.Shutdown();
         }
-
 
         private bool DoBridgePairing(ObservableCollection<Bridge> listBridges = null)
         {

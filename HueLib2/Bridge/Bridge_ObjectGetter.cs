@@ -41,31 +41,31 @@ namespace HueLib2
                     case WebExceptionStatus.Success:
                         MethodInfo method = typeof(Serializer).GetMethod("DeserializeToObject");
                         MethodInfo generic = method.MakeGenericMethod(typeof(T));
-                        bresult.resultobject = generic.Invoke(this, new object[] { comres.data });
-                        bresult.Success = bresult.resultobject != null;
-                        if (bresult.resultobject == null)
+                        bresult.Resultobject = generic.Invoke(this, new object[] { comres.data });
+                        bresult.Success = bresult.Resultobject != null;
+                        if (bresult.Resultobject == null)
                         {
-                            bresult.resultobject = new MessageCollection(Serializer.DeserializeToObject<List<Message>>(comres.data));
-                            lastMessages = (MessageCollection)bresult.resultobject;
+                            bresult.Resultobject = new MessageCollection(Serializer.DeserializeToObject<List<Message>>(comres.data));
+                            lastMessages = (MessageCollection)bresult.Resultobject;
                         }
                         break;
                     case WebExceptionStatus.Timeout:
                         lastMessages = new MessageCollection { _bridgeNotResponding };
                         BridgeNotResponding?.Invoke(this, new BridgeNotRespondingEventArgs() {ex = comres});
-                        bresult.resultobject = comres.data;
-                        bresult.ex = comres.ex;
+                        bresult.Resultobject = comres.data;
+                        bresult.Ex = comres.ex;
                         break;
                     default:
                         lastMessages = new MessageCollection { new UnkownError(comres) };
-                        bresult.resultobject = "Unknown Error : " + comres.data;
-                        bresult.ex = comres.ex;
+                        bresult.Resultobject = "Unknown Error : " + comres.data;
+                        bresult.Ex = comres.ex;
                         break;
                 }
             }
             else
             {
                 bresult.Success = false;
-                bresult.resultobject = "Type of object cannot be null";
+                bresult.Resultobject = "Type of object cannot be null";
             }
 
             return bresult;
@@ -89,26 +89,26 @@ namespace HueLib2
                 switch (comres.status)
                 {
                     case WebExceptionStatus.Success:
-                        bresult.resultobject = Serializer.DeserializeToObject<Dictionary<string, T>>(comres.data);
+                        bresult.Resultobject = Serializer.DeserializeToObject<Dictionary<string, T>>(comres.data);
                         bresult.Success = true;
                         break;
                     case WebExceptionStatus.Timeout:
                         lastMessages = new MessageCollection { _bridgeNotResponding };
                         BridgeNotResponding?.Invoke(this, new BridgeNotRespondingEventArgs() { ex = comres });
-                        bresult.resultobject = comres.data;
-                        bresult.ex = comres.ex;
+                        bresult.Resultobject = comres.data;
+                        bresult.Ex = comres.ex;
                         break;
                     default:
                         lastMessages = new MessageCollection { new UnkownError(comres) };
-                        bresult.resultobject = comres.data;
-                        bresult.ex = comres.ex;
+                        bresult.Resultobject = comres.data;
+                        bresult.Ex = comres.ex;
                         break;
                 }
 
             }
             else
             {
-                bresult.resultobject = "Type of object cannot be null";
+                bresult.Resultobject = "Type of object cannot be null";
             }
             return bresult;
         }
@@ -131,25 +131,25 @@ namespace HueLib2
                 {
                     case WebExceptionStatus.Success:
                         bresult.Success = true;
-                        bresult.resultobject = Serializer.DeserializeSearchResult(comres.data);
+                        bresult.Resultobject = Serializer.DeserializeSearchResult(comres.data);
                         break;
                     case WebExceptionStatus.Timeout:
                         lastMessages = new MessageCollection { _bridgeNotResponding };
                         BridgeNotResponding?.Invoke(this, new BridgeNotRespondingEventArgs() { ex = comres });
-                        bresult.resultobject = comres.data;
-                        bresult.ex = comres.ex;
+                        bresult.Resultobject = comres.data;
+                        bresult.Ex = comres.ex;
                         break;
                     default:
                         lastMessages = new MessageCollection { new UnkownError(comres) };
-                        bresult.resultobject = comres.data;
-                        bresult.ex = comres.ex;
+                        bresult.Resultobject = comres.data;
+                        bresult.Ex = comres.ex;
                         break;
                 }
 
             }
             else
             {
-                bresult.resultobject = "Type of object cannot be null";
+                bresult.Resultobject = "Type of object cannot be null";
             }
             return bresult;
         }

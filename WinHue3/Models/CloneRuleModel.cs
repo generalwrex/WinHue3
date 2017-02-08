@@ -14,7 +14,7 @@ namespace WinHue3.Models
 
         public override string ToString()
         {
-            return $"Replacing {replacingobject.Id} with {withobject.Id}";
+            return $"Replacing [{replacingobject.Id}] {replacingobject.GetName()} with [{withobject.Id}] {withobject.GetName()}";
         }
     }
 }

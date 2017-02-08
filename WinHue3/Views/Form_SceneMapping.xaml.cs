@@ -26,7 +26,7 @@ namespace WinHue3
                 if (sresult.Success)
                 {
                     _smv = DataContext as SceneMappingViewModel;
-                    _smv.Initialize((Dictionary<string, Scene>)sresult.resultobject, (Dictionary<string, Light>)lresult.resultobject, _bridge);
+                    _smv.Initialize((Dictionary<string, Scene>)sresult.Resultobject, (Dictionary<string, Light>)lresult.Resultobject, _bridge);
                 }
                 else
                 {

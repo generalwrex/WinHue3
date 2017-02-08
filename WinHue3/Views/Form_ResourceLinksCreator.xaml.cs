@@ -90,7 +90,7 @@ namespace WinHue3
             
             if (cr.Success)
             {
-                id = cr.resultobject.ToString();
+                id = cr.Resultobject.ToString();
                 DialogResult = true;
                 Close();
             }

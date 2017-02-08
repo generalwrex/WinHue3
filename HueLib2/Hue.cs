@@ -64,7 +64,7 @@ namespace HueLib2
                         CommandResult bresult = GetBridgeBasicConfig(IPAddress.Parse(dev.RootHostName));
                         if (bresult.Success)
                         {
-                            newdetectedBridge.Add(dev.RootHostName, (BasicConfig)bresult.resultobject);
+                            newdetectedBridge.Add(dev.RootHostName, (BasicConfig)bresult.Resultobject);
                         }
 
                     }
@@ -92,7 +92,7 @@ namespace HueLib2
                             CommandResult bresult = GetBridgeBasicConfig(IPAddress.Parse(dev.internalipaddress));
                             if (bresult.Success)
                             {
-                                newdetectedBridge.Add(dev.internalipaddress, (BasicConfig) bresult.resultobject);
+                                newdetectedBridge.Add(dev.internalipaddress, (BasicConfig) bresult.Resultobject);
                             }
                             
                         }
@@ -306,16 +306,16 @@ namespace HueLib2
                     if (config != null)
                     {
                         bresult.Success = true;
-                        bresult.resultobject = config;
+                        bresult.Resultobject = config;
                     }
                     else
                     {
-                        bresult.resultobject = comres.status;
+                        bresult.Resultobject = comres.status;
                     }
                     
                     break;
                 default:
-                    bresult.resultobject = comres.status;
+                    bresult.Resultobject = comres.status;
                     break;
             }
 

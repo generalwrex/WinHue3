@@ -32,7 +32,7 @@ namespace WinHue3
             if (modifiedsensor == null)
             {
                 comres = _bridge.CreateObject<Sensor>(sensor);
-                MessageCollection mc = (MessageCollection) comres.resultobject;
+                MessageCollection mc = (MessageCollection) comres.Resultobject;
                 modifiedsensor = new Sensor() {Id = ((CreationSuccess)mc[0]).id};
             }
             else

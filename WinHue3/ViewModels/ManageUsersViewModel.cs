@@ -65,7 +65,7 @@ namespace WinHue3.ViewModels
                 CommandResult cr = _bridge.GetUserList();
                 if (cr.Success)
                 {
-                    Dictionary<string, Whitelist> list = (Dictionary<string, Whitelist>) cr.resultobject;
+                    Dictionary<string, Whitelist> list = (Dictionary<string, Whitelist>) cr.Resultobject;
 
                     foreach (var item in list)
                     {
@@ -114,7 +114,7 @@ namespace WinHue3.ViewModels
                 Whitelist newitem = new Whitelist
                 {
                     Name = uname,
-                    id = cr.resultobject.ToString(),
+                    id = cr.Resultobject.ToString(),
                     CreateDate = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
                 };
                 ListUsers.Add(newitem);

@@ -4,6 +4,7 @@ using System.Text;
 using HueLib2;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Reflection;
 
 namespace WinHue3
 {
@@ -63,6 +64,14 @@ namespace WinHue3
 
             MessageBox.Show(errors.ToString(), GlobalStrings.Error, MessageBoxButton.OK, MessageBoxImage.Error);
         }
+
+        public static CommandResult ExecuteGenericMethod(this Bridge bridge, string MethodName,Type GenericMethodType, object[] parameters = null)
+        {
+            MethodInfo mi = typeof(Bridge).GetMethod(MethodName);
+            MethodInfo generic = mi.MakeGenericMethod(GenericMethodType);
+            return (CommandResult)generic.Invoke(bridge, parameters);
+        }
+
     }
 
     public static class ObservableCollectionExtensionMethods

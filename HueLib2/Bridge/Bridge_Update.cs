@@ -65,7 +65,7 @@ namespace HueLib2
                     lastMessages = new MessageCollection { new UnkownError(comres) };
                     break;
             }
-            bresult.resultobject = lastMessages;
+            bresult.Resultobject = lastMessages;
             return bresult;
         }
         
@@ -87,7 +87,7 @@ namespace HueLib2
                     if (brs != null)
                     {
                         bresult.Success = true;
-                        bresult.resultobject = brs.swupdate;
+                        bresult.Resultobject = brs.swupdate;
                     }
                     else
                     {
@@ -97,20 +97,20 @@ namespace HueLib2
                         else
                         {
                             lastMessages = new MessageCollection(lstmsg);
-                            bresult.resultobject = lastMessages;
+                            bresult.Resultobject = lastMessages;
                         }
 
-                        bresult.resultobject = Serializer.DeserializeToObject<List<Message>>(comres.data);
+                        bresult.Resultobject = Serializer.DeserializeToObject<List<Message>>(comres.data);
                     }
                     break;
                 case WebExceptionStatus.Timeout:
                     lastMessages = new MessageCollection { _bridgeNotResponding };
                     BridgeNotResponding?.Invoke(this, _e);
-                    bresult.resultobject = lastMessages;
+                    bresult.Resultobject = lastMessages;
                     break;
                 default:
                     lastMessages = new MessageCollection { new UnkownError(comres) };
-                    bresult.resultobject = lastMessages;
+                    bresult.Resultobject = lastMessages;
                     break;
             }
 
@@ -144,7 +144,7 @@ namespace HueLib2
                     lastMessages = new MessageCollection { new UnkownError(comres) };
                     break;
             }
-            bresult.resultobject = lastMessages;
+            bresult.Resultobject = lastMessages;
             return bresult;
         }
 
@@ -173,7 +173,7 @@ namespace HueLib2
                     lastMessages = new MessageCollection { new UnkownError(comres) };
                     break;
             }
-            bresult.resultobject = lastMessages;
+            bresult.Resultobject = lastMessages;
             return bresult;
         }
     }

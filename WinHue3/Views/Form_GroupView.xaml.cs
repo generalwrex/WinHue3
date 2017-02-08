@@ -25,7 +25,7 @@ namespace WinHue3
                 if (comgrp.Success)
                 {
                     
-                    _gvv.Initialize((Dictionary<string, Group>)comgrp.resultobject, (Dictionary<string, Light>)comlgt.resultobject);
+                    _gvv.Initialize((Dictionary<string, Group>)comgrp.Resultobject, (Dictionary<string, Light>)comlgt.Resultobject);
                 }
                 else
                 {

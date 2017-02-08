@@ -736,6 +736,15 @@ namespace WinHue3.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string Form_CloneRule_Remove {
+            get {
+                return ResourceManager.GetString("Form_CloneRule_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cloning a Rule.
         /// </summary>
         public static string Form_CloneRule_Title {

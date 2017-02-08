@@ -4,6 +4,7 @@ using System.Linq;
 using HueLib2;
 using System.Windows.Media;
 using WinHue3.SupportedLights;
+using System.Reflection;
 
 namespace WinHue3
 {
@@ -37,8 +38,8 @@ namespace WinHue3
                 Success = bresult.Success,
                 Hrobject =
                     bresult.Success
-                        ? ProcessLights((Dictionary<string, Light>)bresult.resultobject)
-                        : bresult.resultobject
+                        ? ProcessLights((Dictionary<string, Light>)bresult.Resultobject)
+                        : bresult.Resultobject
             };
             log.Debug("List lights : " + Serializer.SerializeToJson(hr.Hrobject));
 
@@ -60,8 +61,8 @@ namespace WinHue3
                 Success = bresult.Success,
                 Hrobject =
                     bresult.Success
-                        ? ProcessSearchResult(bridge, (SearchResult)bresult.resultobject, true)
-                        : bresult.resultobject
+                        ? ProcessSearchResult(bridge, (SearchResult)bresult.Resultobject, true)
+                        : bresult.Resultobject
             };
             log.Debug("Search Result : " + Serializer.SerializeToJson(hr.Hrobject));
             return hr;
@@ -104,7 +105,7 @@ namespace WinHue3
                 {
                     CommandResult bresult = bridge.GetObject<Light>(kvp.Key);
                     if (!bresult.Success) continue;
-                    Light newlight = (Light)bresult.resultobject;
+                    Light newlight = (Light)bresult.Resultobject;
                     newlight.Id = kvp.Key;
                     newlight.Image = GetImageForLight((bool)newlight.state.reachable ? (bool)newlight.state.on ? LightImageState.On : LightImageState.Off : LightImageState.Unr, newlight.modelid);
                     newlist.Add(newlight);
@@ -116,7 +117,7 @@ namespace WinHue3
                 {
                     CommandResult bresult = bridge.GetObject<Sensor>(kvp.Key);
                     if (!bresult.Success) continue;
-                    Sensor newSensor = (Sensor)bresult.resultobject;
+                    Sensor newSensor = (Sensor)bresult.Resultobject;
                     if (newSensor == null) continue;
                     newSensor.Id = kvp.Key;
                     switch (newSensor.type)
@@ -159,7 +160,7 @@ namespace WinHue3
 
             if (hr.Success)
             {
-                Dictionary<string, Group> gs = (Dictionary<string, Group>) bresult.resultobject;
+                Dictionary<string, Group> gs = (Dictionary<string, Group>) bresult.Resultobject;
                 Group zero = GetGroupZero(bridge);
                 if (zero != null)
                 {
@@ -170,7 +171,7 @@ namespace WinHue3
             }
             else
             {
-                hr.Hrobject = bresult.resultobject;
+                hr.Hrobject = bresult.Resultobject;
             }
 
 
@@ -211,14 +212,14 @@ namespace WinHue3
             HelperResult hr = new HelperResult() {Success = bresult.Success};
             if (bresult.Success)
             {
-                Group group = (Group)bresult.resultobject;
+                Group group = (Group)bresult.Resultobject;
                 group.Id = id;
                 group.Image = GDIManager.CreateImageSourceFromImage((bool)group.action.on ? Properties.Resources.HueGroupOn_Large : Properties.Resources.HueGroupOff_Large);
                 hr.Hrobject = group;
             }
             else
             {
-                hr.Hrobject = bresult.resultobject;
+                hr.Hrobject = bresult.Resultobject;
             }
 
             log.Debug("Group : " + hr.Hrobject);
@@ -240,8 +241,8 @@ namespace WinHue3
                 Success = bresult.Success,
                 Hrobject =
                     bresult.Success
-                        ? ProcessScenes((Dictionary<string, Scene>)bresult.resultobject)
-                        : bresult.resultobject
+                        ? ProcessScenes((Dictionary<string, Scene>)bresult.Resultobject)
+                        : bresult.Resultobject
             };
 
             log.Debug("List Scenes : " + Serializer.SerializeToJson(hr.Hrobject));
@@ -284,8 +285,8 @@ namespace WinHue3
                 Success = bresult.Success,
                 Hrobject =
                     bresult.Success
-                        ? ProcessSchedules((Dictionary<string, Schedule>)bresult.resultobject)
-                        : bresult.resultobject
+                        ? ProcessSchedules((Dictionary<string, Schedule>)bresult.Resultobject)
+                        : bresult.Resultobject
             };
 
             log.Debug("List Schedules : " + Serializer.SerializeToJson(hr.Hrobject));
@@ -364,8 +365,8 @@ namespace WinHue3
                 Success = bresult.Success,
                 Hrobject =
                     bresult.Success
-                        ? ProcessRules((Dictionary<string, Rule>)bresult.resultobject)
-                        : bresult.resultobject
+                        ? ProcessRules((Dictionary<string, Rule>)bresult.Resultobject)
+                        : bresult.Resultobject
             };
 
             log.Debug("List Rules : " + Serializer.SerializeToJson(hr.Hrobject));
@@ -407,8 +408,8 @@ namespace WinHue3
                 Success = bresult.Success,
                 Hrobject =
                     bresult.Success
-                        ? ProcessSensors((Dictionary<string, Sensor>)bresult.resultobject)
-                        : bresult.resultobject
+                        ? ProcessSensors((Dictionary<string, Sensor>)bresult.Resultobject)
+                        : bresult.Resultobject
             };
 
             log.Debug("List Sensors : " + Serializer.SerializeToJson(hr.Hrobject));
@@ -430,8 +431,8 @@ namespace WinHue3
                 Success = bresult.Success,
                 Hrobject =
                     bresult.Success
-                        ? ProcessSearchResult(bridge, (SearchResult)bresult.resultobject, false)
-                        : bresult.resultobject
+                        ? ProcessSearchResult(bridge, (SearchResult)bresult.Resultobject, false)
+                        : bresult.Resultobject
             };
             log.Debug("Search Result : " + Serializer.SerializeToJson(hr.Hrobject));
             return hr;
@@ -493,7 +494,7 @@ namespace WinHue3
             };
             if (hr.Success)
             {
-                DataStore ds = (DataStore) bresult.resultobject;
+                DataStore ds = (DataStore) bresult.Resultobject;
                 Group zero = GetGroupZero(bridge);
                 if (zero != null)
                 {
@@ -504,7 +505,7 @@ namespace WinHue3
             }
             else
             {
-                hr.Hrobject = bresult.resultobject;
+                hr.Hrobject = bresult.Resultobject;
             }
             
 
@@ -518,7 +519,7 @@ namespace WinHue3
             CommandResult cr = bridge.GetObject<Group>("0");
             if (cr.Success)
             {
-                return (Group) cr.resultobject;
+                return (Group) cr.Resultobject;
             }
             else
             {
@@ -575,13 +576,13 @@ namespace WinHue3
             HelperResult hr = new HelperResult { Success = bresult.Success };
             if (bresult.Success)
             {
-                BridgeSettings brs = (BridgeSettings)bresult.resultobject;
+                BridgeSettings brs = (BridgeSettings)bresult.Resultobject;
                 log.Debug("Fetching bridge mac : " + brs.mac);
                 hr.Hrobject = brs.mac;
             }
             else
             {
-                hr.Hrobject = bresult.resultobject;
+                hr.Hrobject = bresult.Resultobject;
             }
 
             return hr;
@@ -599,13 +600,13 @@ namespace WinHue3
             HelperResult hr = new HelperResult { Success = bresult.Success };
             if (bresult.Success)
             {
-                BridgeSettings brs = (BridgeSettings)bresult.resultobject;
+                BridgeSettings brs = (BridgeSettings)bresult.Resultobject;
                 hr.Hrobject = brs.portalservices != null;
             }
             else
             {
                 hr.Hrobject = false;
-                hr.Hrobject = bresult.resultobject;
+                hr.Hrobject = bresult.Resultobject;
             }
             log.Debug("Checking if bridge is authorized : " + Serializer.SerializeToJson(hr.Hrobject));
             return hr;
@@ -623,7 +624,7 @@ namespace WinHue3
             HelperResult hr = new HelperResult
             {
                 Success = bresult.Success,
-                Hrobject = bresult.resultobject
+                Hrobject = bresult.Resultobject
             };
             log.Debug("Getting bridge settings : " + Serializer.SerializeToJson(hr.Hrobject));
             return hr;
@@ -648,7 +649,7 @@ namespace WinHue3
                 CommandResult bresult = bridge.GetObject<Light>(obj.Id);
                 if (bresult.Success)
                 {
-                    Light currentState = (Light)bresult.resultobject;
+                    Light currentState = (Light)bresult.Resultobject;
 
                     if (currentState.state.reachable == false)
                     {
@@ -669,7 +670,7 @@ namespace WinHue3
                             }
                             else
                             {
-                                hr.Hrobject = bresult.resultobject;
+                                hr.Hrobject = bresult.Resultobject;
                             }
 
                         }
@@ -685,7 +686,7 @@ namespace WinHue3
                             }
                             else
                             {
-                                hr.Hrobject = bresult.resultobject;
+                                hr.Hrobject = bresult.Resultobject;
                             }
 
                         }
@@ -694,7 +695,7 @@ namespace WinHue3
                 }
                 else
                 {
-                    hr.Hrobject = bresult.resultobject;
+                    hr.Hrobject = bresult.Resultobject;
                 }
 
             }
@@ -704,7 +705,7 @@ namespace WinHue3
 
                 if (bresult.Success)
                 {
-                    Group currentstate = (Group)bresult.resultobject;
+                    Group currentstate = (Group)bresult.Resultobject;
                     if (currentstate.action.on == true)
                     {
                         log.Debug("Toggling group state : ON");
@@ -717,7 +718,7 @@ namespace WinHue3
                         }
                         else
                         {
-                            hr.Hrobject = bresult.resultobject;
+                            hr.Hrobject = bresult.Resultobject;
                         }
                     }
                     else
@@ -731,14 +732,14 @@ namespace WinHue3
                         }
                         else
                         {
-                            hr.Hrobject = bresult.resultobject;
+                            hr.Hrobject = bresult.Resultobject;
                         }
 
                     }
                 }
                 else
                 {
-                    hr.Hrobject = bresult.resultobject;
+                    hr.Hrobject = bresult.Resultobject;
                 }
 
             }
@@ -757,7 +758,7 @@ namespace WinHue3
             HelperResult hr = new HelperResult() { Success = false };
             if (bresult.Success)
             {
-                Dictionary<string, Whitelist> brlisteusers = (Dictionary<string, Whitelist>)bresult.resultobject;
+                Dictionary<string, Whitelist> brlisteusers = (Dictionary<string, Whitelist>)bresult.Resultobject;
                 List<Whitelist> listusers = new List<Whitelist>();
                 foreach (KeyValuePair<string, Whitelist> kvp in brlisteusers)
                 {
@@ -769,7 +770,7 @@ namespace WinHue3
             }
             else
             {
-                hr.Hrobject = bresult.resultobject;
+                hr.Hrobject = bresult.Resultobject;
             }
 
             return hr;
@@ -838,32 +839,32 @@ namespace WinHue3
             {
                 if (typeof(T) == typeof(Light))
                 {
-                    hr.Hrobject = ProcessLights((Dictionary<string, Light>) bresult.resultobject);
+                    hr.Hrobject = ProcessLights((Dictionary<string, Light>) bresult.Resultobject);
                 }
                 else if(typeof(T) == typeof(Group))
                 {
-                    hr.Hrobject = ProcessGroups((Dictionary<string, Group>)bresult.resultobject);
+                    hr.Hrobject = ProcessGroups((Dictionary<string, Group>)bresult.Resultobject);
                 }
                 else if (typeof(T) == typeof(Scene))
                 {
-                    hr.Hrobject = ProcessScenes((Dictionary<string, Scene>)bresult.resultobject);
+                    hr.Hrobject = ProcessScenes((Dictionary<string, Scene>)bresult.Resultobject);
                 }
                 else if(typeof(T) == typeof(Schedule))
                 {
-                    hr.Hrobject = ProcessSchedules((Dictionary<string, Schedule>)bresult.resultobject);
+                    hr.Hrobject = ProcessSchedules((Dictionary<string, Schedule>)bresult.Resultobject);
                 }
                 else if (typeof(T) == typeof(Sensor))
                 {
-                    hr.Hrobject = ProcessSensors((Dictionary<string, Sensor>)bresult.resultobject);
+                    hr.Hrobject = ProcessSensors((Dictionary<string, Sensor>)bresult.Resultobject);
                 }
                 else if (typeof(T) == typeof(Resourcelink))
                 {
-                    hr.Hrobject = ProcessRessourceLinks((Dictionary<string, Resourcelink>) bresult.resultobject);
+                    hr.Hrobject = ProcessRessourceLinks((Dictionary<string, Resourcelink>) bresult.Resultobject);
                 }
             }
             else
             {
-                hr.Hrobject = bresult.resultobject;
+                hr.Hrobject = bresult.Resultobject;
             }
             return hr;
         }
@@ -876,7 +877,7 @@ namespace WinHue3
             {
                 if (typeof(T) == typeof(Light))
                 {
-                    Light light = (Light)bresult.resultobject;
+                    Light light = (Light)bresult.Resultobject;
 
                     log.Debug("Light : " + light);
                     light.Id = id;
@@ -889,7 +890,7 @@ namespace WinHue3
                 }
                 else if (typeof(T) == typeof(Group))
                 {
-                    Group group = (Group)bresult.resultobject;
+                    Group group = (Group)bresult.Resultobject;
                     log.Debug("Group : " + group);
                     group.Id = id;
                     group.Image = GDIManager.CreateImageSourceFromImage((bool)group.action.on ? Properties.Resources.HueGroupOn_Large : Properties.Resources.HueGroupOff_Large);
@@ -897,14 +898,14 @@ namespace WinHue3
                 }
                 else if (typeof(T) == typeof(Sensor) || typeof(T).BaseType == typeof(Sensor))
                 {
-                    Sensor sensor = (Sensor)bresult.resultobject;
+                    Sensor sensor = (Sensor)bresult.Resultobject;
                     sensor.Id = id;
                     sensor.Image = GDIManager.CreateImageSourceFromImage(sensor.type == "ZGPSwitch" ? Properties.Resources.huetap : Properties.Resources.sensor);
                     hr.Hrobject = sensor;
                 }
                 else if (typeof(T) == typeof(Rule))
                 {
-                    Rule rule = (Rule)bresult.resultobject;
+                    Rule rule = (Rule)bresult.Resultobject;
                     log.Debug("Rule : " + rule);
                     rule.Id = id;
                     rule.Image = GDIManager.CreateImageSourceFromImage(Properties.Resources.rules);
@@ -912,7 +913,7 @@ namespace WinHue3
                 }
                 else if (typeof(T) == typeof(Scene))
                 {
-                    Scene scene = (Scene)bresult.resultobject;
+                    Scene scene = (Scene)bresult.Resultobject;
                     log.Debug("Scene : " + scene);
                     scene.Id = id;
                     scene.Image = GDIManager.CreateImageSourceFromImage(Properties.Resources.SceneLarge);
@@ -920,7 +921,7 @@ namespace WinHue3
                 }
                 else if (typeof(T) == typeof(Schedule))
                 {
-                    Schedule schedule = (Schedule)bresult.resultobject;
+                    Schedule schedule = (Schedule)bresult.Resultobject;
                     schedule.Id = id;
                     ImageSource imgsource;
                     if (schedule.localtime.Contains("PT"))
@@ -949,7 +950,7 @@ namespace WinHue3
                 }
                 else if (typeof(T) == typeof(Resourcelink))
                 {
-                    Resourcelink rl = (Resourcelink) bresult.resultobject;
+                    Resourcelink rl = (Resourcelink) bresult.Resultobject;
                     rl.Id = id;
                     rl.Image = GDIManager.CreateImageSourceFromImage(Properties.Resources.resource);
                     hr.Hrobject = rl;
@@ -957,9 +958,16 @@ namespace WinHue3
             }
             else
             {
-                hr.Hrobject = bresult.resultobject;
+                hr.Hrobject = bresult.Resultobject;
             }
             return hr;
+        }
+
+        public static HelperResult ExecuteGenericMethod(string MethodName, Type SelectedObjectType, object[] parameters)
+        {
+            MethodInfo mi = typeof(HueObjectHelper).GetMethod(MethodName);
+            MethodInfo gm = mi.MakeGenericMethod(SelectedObjectType);           
+            return (HelperResult)gm.Invoke(null, parameters); 
         }
 
     }
